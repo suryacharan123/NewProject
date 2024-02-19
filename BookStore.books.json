@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "65d1a908420278b9de224821"
+  },
+  "title": "The Catcher in the Rye",
+  "author": "J.D. Salinger",
+  "genre": "Fiction",
+  "price": 1800,
+  "image": "https://res.cloudinary.com/dcdednhri/image/upload/v1708239113/local-uploads/image-1708239110645.png",
+  "description": "The Catcher in the Rye is a classic novel that explores the challenges of adolescence and the journey to self-discovery. Follow the protagonist, Holden Caulfield, as he navigates the complexities of life and society.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65d1a989420278b9de224823"
+  },
+  "title": "To Kill a Mockingbird",
+  "author": "Harper Lee",
+  "genre": "Historical Fiction",
+  "price": 1500,
+  "image": "https://res.cloudinary.com/dcdednhri/image/upload/v1708239242/local-uploads/image-1708239239687.png",
+  "description": "To Kill a Mockingbird is a powerful novel that addresses issues of racial injustice and moral growth in the American South. Harper Lee's masterpiece continues to resonate with readers for its timeless themes.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65d1a9bc420278b9de224825"
+  },
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "genre": "Classic",
+  "price": 1450,
+  "image": "https://res.cloudinary.com/dcdednhri/image/upload/v1708239292/local-uploads/image-1708239290174.png",
+  "description": "The Great Gatsby is a classic tale of wealth, love, and the American Dream set in the Roaring Twenties. F. Scott Fitzgerald's elegant prose captures the essence of the Jazz Age.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65d1a9f5420278b9de224827"
+  },
+  "title": "1984",
+  "author": "George Orwell",
+  "genre": "Dystopian",
+  "price": 1200,
+  "image": "https://res.cloudinary.com/dcdednhri/image/upload/v1708239350/local-uploads/image-1708239347322.png",
+  "description": "1984 is a dystopian novel that paints a grim picture of a totalitarian future. George Orwell's prophetic work explores themes of surveillance, censorship, and the power of the state.",
+  "__v": 0
+}]
