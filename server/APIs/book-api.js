@@ -11,9 +11,9 @@ const bodyParser = require('body-parser');
 bookRoutes.use(bodyParser.urlencoded({ extended: true }))
 // Configure cloudinary
 cloudinary.config({
-    cloud_name: 'dcdednhri',
-    api_key: '243249145463289',
-    api_secret: '5M5t9qRTPDu7iKuoXbU0SS7y7HA'
+    cloud_name: 'djgweeuce',
+    api_key: '434956685422673',
+    api_secret: 'keYzQ_qn3IBGzGq964yGtsKXLbk'
 });
 
 

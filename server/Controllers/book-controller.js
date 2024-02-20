@@ -6,7 +6,9 @@ const addBookData = async (req, res) => {
     try {
         //Get the book Data
         const bookData = req.body;
+        console.log(bookData);
         //Add the image link to the book Data
+        console.log(req.file)
         bookData.image = req.file.path
         //Update the database
         const dbRes = await bookModel.create(bookData);
