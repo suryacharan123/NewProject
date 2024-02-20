@@ -7,20 +7,39 @@ function AdminAddBooksPage() {
 
   let handleAddBook = async (bookDetails) => {
 
-    toast.loading();
-    let res = await checkBookExistsAPI(bookDetails);//checkBookExists
-    toast.dismiss();
+    // toast.loading();
+    // let res = await checkBookExistsAPI(bookDetails);//checkBookExists
+    // toast.dismiss();
 
-    let resLen = res.data.length;
-    if (resLen) {
-      toast.error("Book already exists.");
-    }
-    else {
-      toast.loading();
-      await addBookDetailsAPI(bookDetails);
-      toast.dismiss();
+    // let resLen = res.data.length;
+    // if (resLen) {
+    //   toast.error("Book already exists.");
+    // }
+    // { title, author, description, image, price, genre }
+      const formData = new FormData();
+
+      formData.append('image',bookDetails.image);
+      formData.append("title",bookDetails.title);
+      formData.append("author",bookDetails.author);
+      formData.append("description",bookDetails.description);
+      formData.append("genere",bookDetails.genre);
+      formData.append("price",bookDetails.price);
+
+      // toast.loading();
+      // await addBookDetailsAPI(bookDetails);
+      // toast.dismiss();
       toast.success("Book Data Added");
-    }
+      try{
+        const response = await fetch("http://localhost:4000/book-api/add-books",{
+          method:"POST",
+          body:formData
+        })
+        const data =await response.json();
+      }
+      catch(e){
+        console.log(e)
+      }
+    
   }
 
 

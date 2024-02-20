@@ -23,7 +23,7 @@ function UserLoginStore({ children }) {
             userObj.cart = cartItems;
 
             let dbRes = await axios.post("http://localhost:4000/user-api/login",userObj);
-            
+            console.log(dbRes)
             if(dbRes.data.message === "Login Successful"){
                 //Set all the states
                 setLoginStatus(true);

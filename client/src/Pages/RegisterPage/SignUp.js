@@ -34,17 +34,12 @@ function SignUp() {
         }
         else {
             //Check if the user exists.
-            let userExists = await axios.get(`http://localhost:5000/users?username=${username}`);
-            if (userExists.data.length !== 0) {
-                toast.error("User Name already taken!!");
-            }
-            else {
+            
                 //Encrypt the password
-                let encryptedPassword = hashSync(password, 5);
                 let userObj = {
                     username: username,
                     email: email,
-                    password: encryptedPassword,
+                    password: password,
                     isAdmin: false,
                     cart: []
                 }
@@ -52,19 +47,18 @@ function SignUp() {
                     username :username,
                     orderDetails : []
                 }
-                console.log(orderObj);
+                
                 toast.loading("Please wait a moment");
-                let res = await axios.post('http://localhost:5000/users', userObj);
-                let res1 = await axios.post('http://localhost:5000/orders', orderObj);  
-                console.log(res1);
+                let res = await axios.post('http://localhost:4000/user-api/register', userObj);
+                console.log(res);
                 toast.dismiss();
-                if (res.status === 201) {
+                if (res.status === 200) {
                     toast.success("Sign Up successful.");
                     setTimeout(() => {
                         navigate("/login");
                     }, 1000);
                 }
-            }
+            
         }
 
     }

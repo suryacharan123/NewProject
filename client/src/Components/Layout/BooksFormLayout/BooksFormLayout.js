@@ -15,6 +15,10 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
     let [genre, setGenre] = useState('')
 
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+    }
 
     let handleSubmit = async (e) => {
         e.preventDefault();
@@ -87,14 +91,7 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
                     <textarea rows="4" cols="50" className='form-control' value={description} placeholder="Enter Description of the Book" onChange={(e) => { setDescription(e.target.value) }} />
                 </div>
 
-                <FormInputField
-                    label='Image URL'
-                    type='text'
-                    className='form-input'
-                    placeholder='Enter Image URL'
-                    handleChange={setImage}
-                    value={image}
-                />
+                <input type="file" accept="image/*" onChange={handleImageChange}/>
 
                 <FormInputField
                     label='Price'

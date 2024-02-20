@@ -40,8 +40,11 @@ export const checkBookExistsAPI = async (bookDetails) => {
     return await axios.get(API_URL + `/books?title=${bookDetails.bookname}`);
 }
 
+// export const addBookDetailsAPI = async (bookDetails) => {
+//     return await axios.post(API_URL + "/books", bookDetails);
+// }
 export const addBookDetailsAPI = async (bookDetails) => {
-    return await axios.post(API_URL + "/books", bookDetails);
+    return await axios.post(`http://localhost:4000/book-api/add-books`,bookDetails);
 }
 
 export const updateBookDetailsAPI = async (location, bookDetails) => {
