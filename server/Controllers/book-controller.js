@@ -46,4 +46,14 @@ const getBookDetails = async (req, res) => {
     }
 }
 
+
+const updateBookData = async(req,res) =>{
+    try{
+
+    }
+    catch(error){
+        
+    }
+}
+
 module.exports = { addBookData, getBooks, getBookDetails }
