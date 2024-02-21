@@ -10,7 +10,7 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
     let [title, setTitle] = useState('')
     let [author, setAuthor] = useState('')
     let [description, setDescription] = useState('')
-    let [image, setImage] = useState('')
+    let [image, setImage] = useState(null)
     let [price, setPrice] = useState()
     let [genre, setGenre] = useState('')
 
@@ -91,7 +91,7 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
                     <textarea rows="4" cols="50" className='form-control' value={description} placeholder="Enter Description of the Book" onChange={(e) => { setDescription(e.target.value) }} />
                 </div>
 
-                <input type="file" accept="image/*" onChange={handleImageChange}/>
+                <input type="file" onChange={handleImageChange}/>
 
                 <FormInputField
                     label='Price'

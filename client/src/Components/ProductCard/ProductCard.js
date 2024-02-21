@@ -10,11 +10,11 @@ function ProductCard({ book, isAdmin, handleUpdate, handleDelete }) {
 
 
     let handleDeleteButton = async () => {
-        await handleDelete(book.id)
+        await handleDelete(book._id)
     }
 
     let handleUpdateButton = async () => {
-        await handleUpdate(book.id);
+        await handleUpdate(book._id);
     }
 
     return (

@@ -3,7 +3,8 @@ import Navbar from '../../Components/Navbar/Navbar'
 import { updateBookDetailsAPI } from '../../utils/apicalls'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BooksFormLayout from '../../Components/Layout/BooksFormLayout/BooksFormLayout'
-import { Toaster,toast } from 'react-hot-toast'
+import { Toaster, toast } from 'react-hot-toast'
+import axios from 'axios'
 function UpdateBookpage() {
 
 
@@ -14,22 +15,22 @@ function UpdateBookpage() {
 
     let handleUpdate = async (data) => {
         console.log(data);
-        let bookDetails = {
-            title: data.title,
-            author: data.author,
-            genre: data.genre,
-            price: parseInt(data.price) ,
-            image: data.image,
-            reviews: [],
-            description: data.description
-        }
+
+        const formData = new FormData();
+        formData.append('image', data.image);
+        formData.append("title", data.title);
+        formData.append("author", data.author);
+        formData.append("description", data.description);
+        formData.append("genere", data.genre);
+        formData.append("price", data.price);
         toast.loading();
-        await updateBookDetailsAPI(location,bookDetails)
+        // const dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
+        // await updateBookDetailsAPI(location,bookDetails)
         toast.dismiss();
         toast.success("Book Data Updated");
-        setTimeout(()=>{
-            navigate('/admin')
-        },  1000);
+        // setTimeout(()=>{
+        //     navigate('/admin')
+        // },  1000);
     }
 
 
@@ -37,11 +38,11 @@ function UpdateBookpage() {
     return (
         <div>
             <Navbar theme={true} />
-            <Toaster/>
+            <Toaster />
             <div>
                 <div className='bg-dark d-flex justify-content-center align-items-center' style={{ minHeight: "94vh" }}>
                     <div className='container p-4 ' style={{ marginTop: "-90px" }}>
-                    <BooksFormLayout heading="Update Book Details" onSubmit = {handleUpdate} isEdit={true}/>
+                        <BooksFormLayout heading="Update Book Details" onSubmit={handleUpdate} isEdit={true} />
                     </div>
 
                 </div>

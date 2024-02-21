@@ -29,7 +29,10 @@ function AllProducts({ isAdmin }) {
   };
 
   const handleUpdate = async (id) => {
-    const bookData = booksData.filter((book) => book.id === id);
+    alert("")
+    console.log(id);
+    const bookData = booksData.filter((book) => book._id === id);
+    console.log(bookData)
     navigate('/update-books', { state: bookData });
   };
 
