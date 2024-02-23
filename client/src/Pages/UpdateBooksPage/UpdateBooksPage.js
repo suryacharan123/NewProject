@@ -15,19 +15,25 @@ function UpdateBookpage() {
 
     let handleUpdate = async (data) => {
         console.log(data);
-
+        data.price = parseInt(data.price);
         const formData = new FormData();
+        formData.append("_id",data._id);
         formData.append('image', data.image);
         formData.append("title", data.title);
         formData.append("author", data.author);
         formData.append("description", data.description);
-        formData.append("genere", data.genre);
+        formData.append("genere", data.genere);
         formData.append("price", data.price);
-        toast.loading();
-        // const dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
-        // await updateBookDetailsAPI(location,bookDetails)
-        toast.dismiss();
-        toast.success("Book Data Updated");
+        formData.append("oldImage",data.oldImage);
+        // console.log(typeof(image))
+        console.log("Here")
+        let dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
+        console.log(dbRes);
+        // toast.loading();
+        // // const dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
+        // // await updateBookDetailsAPI(location,bookDetails)
+        // toast.dismiss();
+        // toast.success("Book Data Updated");
         // setTimeout(()=>{
         //     navigate('/admin')
         // },  1000);

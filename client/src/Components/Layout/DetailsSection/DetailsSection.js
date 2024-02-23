@@ -42,7 +42,7 @@ function DetailsSection() {
 
     const handleAddToCart = async () => {
         let res = await addToCart(bookData);
-
+        
 
         setPromptMsg("Book Added to Cart.");
         setPromptHeading("Success!!!")
@@ -78,7 +78,7 @@ function DetailsSection() {
                     <div className='book-detail-container w-100 p-sm-3'>
                         <h2 className='mb-0 '>{bookData.title}</h2>
                         <p className='mb-0 author'>{bookData.author}</p>
-                        <p className='mb-0 p-0'>Gener : {bookData.genre}</p>
+                        <p className='mb-0 p-0'>Gener : {bookData.genere}</p>
                         <p>{bookData.description}</p>
                         <p className='mb-0'><b>Language</b> : English</p>
                         <h3 className='mb-0 price'>&#8377;{bookData.price}</h3>

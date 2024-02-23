@@ -3,7 +3,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import "./SignUp.css";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { hashSync } from 'bcryptjs'
+
 // import Popup from '../../Components/Popup/Popup';
 import BlackButton from '../../Components/Buttons/BlackButton';
 import Footer from '../../Components/Footer/Footer';

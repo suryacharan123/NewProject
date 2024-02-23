@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { userLoginContextObj } from './userLoginContext'
 import axios from 'axios'
-import { compareSync } from 'bcryptjs';
+// import { compareSync } from 'bcryptjs';
 import { checkUserNameAPI, getPreviousOrders, updateUserCartAPI } from '../utils/apicalls';
 
 
@@ -23,7 +23,7 @@ function UserLoginStore({ children }) {
             userObj.cart = cartItems;
 
             let dbRes = await axios.post("http://localhost:4000/user-api/login",userObj);
-            console.log(dbRes)
+        
             if(dbRes.data.message === "Login Successful"){
                 //Set all the states
                 setLoginStatus(true);
@@ -39,7 +39,7 @@ function UserLoginStore({ children }) {
                 }
             }
             else{
-                console.log(dbRes.data.message);
+                // console.log(dbRes.data.message);
                 return ;
             }
         } catch (error) {
@@ -60,7 +60,7 @@ function UserLoginStore({ children }) {
     let addToCart = async (bookData) => {
         let currentCartItems = [...cartItems];
         let bookDetails = {
-            id: bookData.id,
+            _id: bookData._id,
             title: bookData.title,
             author: bookData.author,
             price: bookData.price,
@@ -71,21 +71,18 @@ function UserLoginStore({ children }) {
 
         //If book is in Cart add quantity
         const bookInCart = isBookInCart(bookDetails, cartItems);
-
+        // console.log(bookInCart);
         //Book is in cart
         if (bookInCart !== undefined) {
 
             bookInCart.qty += 1;
-            let updatedCart = cartItems.filter((item) => item.id !== bookInCart.id);
+            let updatedCart = cartItems.filter((item) => item._id !== bookInCart._id);
 
             updatedCart = updatedCart.concat(bookInCart);
             if (loginStatus) {
-
                 let currentUserObj = {...currentUser};
                 currentUserObj.cart = updatedCart;
                 setCurrentUser(currentUserObj)
-                
-                console.log(currentUserObj);
                 await updateUserCartAPI({user:currentUserObj,token : localStorage.getItem("token")});
             }
 
@@ -102,7 +99,7 @@ function UserLoginStore({ children }) {
                 
                 setCurrentUser(currentUserObj);
                 
-                console.log(currentUserObj);
+                // console.log(currentUserObj);
                 await updateUserCartAPI({user:currentUserObj,token : localStorage.getItem("token")});
             }
         }
@@ -112,9 +109,10 @@ function UserLoginStore({ children }) {
     //Remove items from cart
     let removeFromCart = async (book) => {
         console.log(book);
-        let updatedCart = cartItems.filter((item) => item.id !== book.id);
+        console.log("Remove from Cart");
+        let updatedCart = cartItems.filter((item) => item._id !== book._id);
         setCartItems(updatedCart);
-
+        console.log(updatedCart)
         if (loginStatus) {
             let currentUserObj = {...currentUser}
             currentUserObj.cart = updatedCart;
@@ -135,11 +133,14 @@ function UserLoginStore({ children }) {
     }
 
     let handleQtyChange = async (book, qty) => {
+        
         let cartItemObj = [...cartItems];
-        let index = cartItemObj.findIndex((item) => item.id === book.id);
+        let index = cartItemObj.findIndex((item) => item._id === book._id);
+        
         cartItemObj[index].qty += qty;
 
         if (cartItemObj[index].qty === 0) {
+            console.log("Here");
             await removeFromCart(book);
             return;
         }

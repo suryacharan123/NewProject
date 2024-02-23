@@ -12,28 +12,31 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
     let [description, setDescription] = useState('')
     let [image, setImage] = useState(null)
     let [price, setPrice] = useState()
-    let [genre, setGenre] = useState('')
-
+    let [genere, setgenere] = useState('')
+    let [oldImage ,setOldImage] = useState('');
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
+        alert("Here")
+        console.log(file);
         setImage(file);
     }
 
     let handleSubmit = async (e) => {
         e.preventDefault();
         if (isEdit) {
-            await onSubmit({ title, author, description, image, price, genre });
+            let _id = location.state[0]._id;
+            await onSubmit({_id:_id, title, author, description, image, price, genere ,oldImage});
         }
         else {
             
-            await onSubmit({ title, author, description, image, price, genre });
+            await onSubmit({ title, author, description, image, price, genere });
             setAuthor('');
             setTitle('');
             setDescription('');
             setImage('');
             setPrice('');
-            setGenre('');
+            setgenere('');
             alert("Book Data Added");
         }
     }
@@ -43,13 +46,14 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
         //If you get values for update fill the values in the input fields
         if (location.state) {
             
-            const { author, title, description, image, price, genre } = location.state[0];
+            const { author, title, description, image, price, genere } = location.state[0];
             setAuthor(author || '');
             setTitle(title || '');
             setDescription(description || '');
             setImage(image || '');
             setPrice(price || 0);
-            setGenre(genre || '');
+            setgenere(genere || '');
+            setOldImage(image || '');
 
         }
     }, [location.state]);
@@ -78,12 +82,12 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
 
 
                 <FormInputField
-                    label='Genre'
+                    label='genere'
                     type='text'
                     className='form-input'
-                    placeholder='Enter the Genre of the Book'
-                    handleChange={setGenre}
-                    value={genre}
+                    placeholder='Enter the genere of the Book'
+                    handleChange={setgenere}
+                    value={genere}
                 />
 
                 <div className="form-group  mb-3">

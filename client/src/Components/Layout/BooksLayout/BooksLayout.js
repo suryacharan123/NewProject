@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 import { getAllBookDetailsAPI } from '../../../utils/apicalls';
 import { deleteBookDataAPI } from '../../../utils/apicalls';
+import axios from 'axios';
 function AllProducts({ isAdmin }) {
   let navigate = useNavigate();
   const [booksData, setBookData] = useState([]);
@@ -19,7 +20,7 @@ function AllProducts({ isAdmin }) {
       //Get all book Details
       toast.loading();
       const res = await getAllBookDetailsAPI();
-      console.log(res);
+      // console.log(res);
       setBookData(res.data.payload);
       toast.dismiss();
 
@@ -29,18 +30,22 @@ function AllProducts({ isAdmin }) {
   };
 
   const handleUpdate = async (id) => {
-    alert("")
     console.log(id);
     const bookData = booksData.filter((book) => book._id === id);
-    console.log(bookData)
+    // console.log(bookData)
     navigate('/update-books', { state: bookData });
   };
 
   const handleDelete = async (id) => {
     try {
-      await deleteBookDataAPI(id);
-      const updatedBookData = booksData.filter((book) => book.id !== id);
-      setBookData(updatedBookData);
+      // await deleteBookDataAPI(id);
+      let dbRes = await axios.delete("http://localhost:4000/book-api/delete-book-data",{
+        params : {id: id}
+      });
+      if(dbRes.status === 200){
+        const updatedBookData = booksData.filter((book) => book._id !== id);
+        setBookData(updatedBookData);      
+      }
     } catch (error) {
       console.error("Error deleting book:", error);
     }

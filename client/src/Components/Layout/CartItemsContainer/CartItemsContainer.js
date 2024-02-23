@@ -55,7 +55,7 @@ function CartItemsContainer() {
             total = total + (item.price * item.qty);
         });
         setTotalAmount(total);
-        console.log(paymentDetailsData);
+        // console.log(paymentDetailsData);
     }, [cartItems]);
 
     let handlePayment = () => {
