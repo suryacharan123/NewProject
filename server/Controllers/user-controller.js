@@ -8,7 +8,7 @@ const { addToCart } = require('../scripts/cartFunction');
 const userLogin = async (req, res) => {
     //Get data
     let userCred = req.body;
-
+    console.log(userCred);
     const user = await userModel.findOne({ username: userCred.username });
     //If user Exists
     if (user) {
@@ -59,12 +59,13 @@ const userRegistration = async (req, res) => {
 //Handle User Cart Updation.
 const updateUserCart = async (req, res) => {
     try {
-        let user = req.body.user;
+        let user = req.body;
         let dbRes = await userModel.updateOne({ _id: user._id }
             , { $set: { cart: user.cart } });
-        console.log(dbRes);
+        res.status(200).send({message : "Cart Updated"});
     } catch (error) {
-        console.log("Error")
+        console.log("Error");
+        res.status(500).send({message : "internal server error"});
     }
 }
 

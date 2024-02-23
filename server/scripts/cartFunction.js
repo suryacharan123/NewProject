@@ -1,7 +1,8 @@
 
 function addToCart(newBooks,existingBooks){
+    console.log(newBooks)
     newBooks.forEach(book2 => {
-        const index = existingBooks.findIndex(book1 => book1.id === book2.id);
+        const index = existingBooks.findIndex(book1 => book1._id === book2._id);
         if (index !== -1) {
             existingBooks[index].qty += book2.qty;
         }

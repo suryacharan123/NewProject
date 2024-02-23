@@ -12,7 +12,7 @@ userApp.post("/login", expressAsyncHandler(userLogin));
 userApp.post("/register", usernameTaken,expressAsyncHandler(userRegistration))
 
 //Update Cart
-userApp.put("/update-cart",verifyToken,expressAsyncHandler(updateUserCart));
+userApp.put("/update-cart",expressAsyncHandler(updateUserCart));
 
 // Export userApi
 module.exports = userApp;
