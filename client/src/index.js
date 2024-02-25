@@ -6,13 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter } from 'react-router-dom';
 import UserLoginStore from './Context/UserLoginStore';
-import { Provider } from 'react-redux';
-// import { reduxStore } from './Redux/reduxStore';
+// import { Provider } from 'react-redux';
+// import {store} from './Redux/Store'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
-    {/* <Provider store={reduxStore}> */}
+    {/* <Provider store={store}> */}
       <UserLoginStore>
         <App />
       </UserLoginStore>

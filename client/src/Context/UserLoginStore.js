@@ -11,40 +11,50 @@ import { addQtyOnLogin, isBookInCart } from './../utils/cartFunctions';
 function UserLoginStore({ children }) {
     let [loginStatus, setLoginStatus] = useState(false);
     let [currentUser, setCurrentUser] = useState({});
-    let [userOrders,setUserOrders] = useState({})
+    let [userOrders, setUserOrders] = useState({})
     const [cartItems, setCartItems] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
 
 
     //Handle user Login event Node
-    let handleUserLogin = async(userObj) =>{
+    let handleUserLogin = async (userObj) => {
         try {
             //Add current cart items into the userObj
             userObj.cart = cartItems;
 
-            let dbRes = await axios.post("http://localhost:4000/user-api/login",userObj);
-        
-            if(dbRes.data.message === "Login Successful"){
+            let dbRes = await axios.post("http://localhost:4000/user-api/login", userObj);
+
+            if (dbRes.data.message === "Login Successful") {
                 //Set all the states
                 setLoginStatus(true);
                 setCurrentUser(dbRes.data.user);
                 setIsAdmin(dbRes.data.user.isAdmin);
                 setCartItems(dbRes.data.user.cart);
-                localStorage.setItem("token",dbRes.data.token)
-                if(dbRes.data.user.isAdmin){
+                localStorage.setItem("token", dbRes.data.token)
+
+                if (dbRes.data.user.isAdmin) {
                     return "ADMIN_LOGIN"
                 }
-                else{
+                else {
                     return "USER_LOGIN"
                 }
             }
-            else{
+            else {
                 // console.log(dbRes.data.message);
-                return ;
+                return;
             }
         } catch (error) {
             console.log(error)
         }
+    }
+
+    //Handle user Login when token is valid
+    let handleUserTokenLogin = async (userObj) => {
+        setLoginStatus(true);
+        console.log(userObj);
+        setCurrentUser(userObj);
+        setIsAdmin(userObj.isAdmin);
+        setCartItems(userObj.cart);
     }
 
     //Handle the logout event
@@ -80,10 +90,10 @@ function UserLoginStore({ children }) {
 
             updatedCart = updatedCart.concat(bookInCart);
             if (loginStatus) {
-                let currentUserObj = {...currentUser};
+                let currentUserObj = { ...currentUser };
                 currentUserObj.cart = updatedCart;
                 setCurrentUser(currentUserObj)
-                await updateUserCartAPI({user:currentUserObj,token : localStorage.getItem("token")});
+                await updateUserCartAPI({ user: currentUserObj, token: localStorage.getItem("token") });
             }
 
             setCartItems(updatedCart)
@@ -94,13 +104,13 @@ function UserLoginStore({ children }) {
             setCartItems(currentCartItems);
             if (loginStatus) {
 
-                let currentUserObj = {...currentUser};
+                let currentUserObj = { ...currentUser };
                 currentUserObj.cart = currentCartItems;
-                
+
                 setCurrentUser(currentUserObj);
-                
+
                 // console.log(currentUserObj);
-                await updateUserCartAPI({user:currentUserObj,token : localStorage.getItem("token")});
+                await updateUserCartAPI({ user: currentUserObj, token: localStorage.getItem("token") });
             }
         }
 
@@ -114,7 +124,7 @@ function UserLoginStore({ children }) {
         setCartItems(updatedCart);
         console.log(updatedCart)
         if (loginStatus) {
-            let currentUserObj = {...currentUser}
+            let currentUserObj = { ...currentUser }
             currentUserObj.cart = updatedCart;
             setCurrentUser(currentUserObj)
             await updateUserCartAPI(currentUserObj)
@@ -126,17 +136,17 @@ function UserLoginStore({ children }) {
     let emptyCart = async () => {
         let updatedCart = [];
         setCartItems(updatedCart);
-        let currentUserObj = {...currentUser}
+        let currentUserObj = { ...currentUser }
         currentUserObj.cart = updatedCart;
         setCurrentUser(currentUserObj);
         await updateUserCartAPI(currentUserObj)
     }
 
     let handleQtyChange = async (book, qty) => {
-        
+
         let cartItemObj = [...cartItems];
         let index = cartItemObj.findIndex((item) => item._id === book._id);
-        
+
         cartItemObj[index].qty += qty;
 
         if (cartItemObj[index].qty === 0) {
@@ -157,7 +167,7 @@ function UserLoginStore({ children }) {
 
     return (
         <>
-            <userLoginContextObj.Provider value={{userOrders,setUserOrders, handleQtyChange, emptyCart, isAdmin, removeFromCart, cartItems, setCartItems, loginStatus, currentUser, handleUserLogin, handleLogout, addToCart }}>{children}</userLoginContextObj.Provider>
+            <userLoginContextObj.Provider value={{ userOrders, handleUserTokenLogin, setUserOrders, handleQtyChange, emptyCart, isAdmin, removeFromCart, cartItems, setCartItems, loginStatus, currentUser, handleUserLogin, handleLogout, addToCart }}>{children}</userLoginContextObj.Provider>
         </>
     )
 }

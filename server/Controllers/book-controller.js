@@ -1,4 +1,6 @@
 const bookModel = require("../Models/productModel");
+const fs = require("fs");
+const path = require("path");
 const url = require("url")
 const { cloudinary } = require("../Middleware/cloudinaryUpload");
 const booksModel = require("../Models/productModel");
@@ -21,6 +23,21 @@ const addBookData = async (req, res) => {
 
         const dbRes = await bookModel.create(bookData);
 
+        fs.access(req.file.path, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error('File does not exist:', err);
+                return;
+            }
+    
+            // File exists, so delete it
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                    return;
+                }
+                console.log('File deleted successfully');
+            });
+        });
 
         res.status(200).send({ message: "Book Created" })
     }

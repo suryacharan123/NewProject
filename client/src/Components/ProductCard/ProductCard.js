@@ -23,7 +23,7 @@ function ProductCard({ book, isAdmin, handleUpdate, handleDelete }) {
                 <BookImage className='product-listing-image' image={book.image} style={{}} />
             </div>
             <div className='product-details-container'>
-                <h4 className='mb-0'>{book.title}</h4>
+                <h4 className='mb-0  title-container'>{book.title}</h4>
                 <p className='mb-0 author-name'>{book.author}</p>
                 <p className='mb-0 pricing'>&#8377; {book.price}</p>
             </div>

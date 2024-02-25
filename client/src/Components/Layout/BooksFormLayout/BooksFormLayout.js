@@ -18,7 +18,6 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         alert("Here")
-        console.log(file);
         setImage(file);
     }
 
@@ -34,10 +33,10 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
             setAuthor('');
             setTitle('');
             setDescription('');
-            setImage('');
+            setImage(null);
             setPrice('');
             setgenere('');
-            alert("Book Data Added");
+            // alert("Book Data Added");
         }
     }
 

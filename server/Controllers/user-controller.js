@@ -6,7 +6,8 @@ const { addToCart } = require('../scripts/cartFunction');
 
 //handle User Login Operation
 const userLogin = async (req, res) => {
-    //Get data
+    try {
+        //Get data
     let userCred = req.body;
     console.log(userCred);
     const user = await userModel.findOne({ username: userCred.username });
@@ -17,11 +18,10 @@ const userLogin = async (req, res) => {
             //Create a jwt Token
             const token = jwt.sign({ username: user.username }, process.env.TOKEN_SECRET_KEY, { expiresIn: "2d" })
 
-            //Check if user Added items to cart
+            //Check if user Added items to cart before loggin in.
             if (userCred.cart.length !== 0) {
                 user.cart = addToCart(userCred.cart, user.cart);
                 const dbRes = await userModel.updateOne({ username: user.username }, user);
-                console.log(dbRes);
             }
 
             res.status(200).send({ message: "Login Successful", user: user, token: token })
@@ -32,6 +32,10 @@ const userLogin = async (req, res) => {
     }
     else {
         res.status(200).send({ message: "Wrong UserName" });
+    }
+    } catch (error) {
+        console.log("Error in UserLogin");
+        res.status(500).send({message : "Internal server Error"})
     }
 
 };
@@ -52,7 +56,8 @@ const userRegistration = async (req, res) => {
         res.status(200).send({ message: "User Created", user: dbRes });
     }
     catch (error) {
-        console.log("|Error", error)
+        console.log("Error", error);
+        res.status(500).send({message : "Internal Server Error"});
     }
 }
 
@@ -60,14 +65,30 @@ const userRegistration = async (req, res) => {
 const updateUserCart = async (req, res) => {
     try {
         let user = req.body;
+        //Update user Cart data;
         let dbRes = await userModel.updateOne({ _id: user._id }
             , { $set: { cart: user.cart } });
-        res.status(200).send({message : "Cart Updated"});
+        res.status(200).send({ message: "Cart Updated" });
     } catch (error) {
-        console.log("Error");
-        res.status(500).send({message : "internal server error"});
+        console.log("Error in updateUserCart");
+        res.status(500).send({ message: "internal server error" });
     }
 }
 
+//Handle Token Validation
+const checkSession = async (req, res) => {
+    try {
+        let username = req.body.username;
+        //Get user data
+        let dbRes = await userModel.findOne({ username: username });
+        res.status(200).send({message:"Login Successful",payload : dbRes});
+    } catch (error) {
+        console.log("Error in checkSession");
 
-module.exports = { userLogin, userRegistration, updateUserCart };
+        res.status(500).send({message : "Internal Server Error Please try again"});
+    }
+
+}
+
+
+module.exports = { userLogin, userRegistration, updateUserCart, checkSession };
