@@ -1,4 +1,5 @@
 const userModel = require("../Models/userModel")
+const orderModel = require("../Models/ordersModel");
 const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken");
 const { addToCart } = require('../scripts/cartFunction');
@@ -9,7 +10,7 @@ const userLogin = async (req, res) => {
     try {
         //Get data
     let userCred = req.body;
-    console.log(userCred);
+    // console.log(userCred);
     const user = await userModel.findOne({ username: userCred.username });
     //If user Exists
     if (user) {
@@ -52,6 +53,15 @@ const userRegistration = async (req, res) => {
 
         userData.cart = [];
         //Create user in Database
+
+        let orderObj = {
+            username :userData.username,
+            orderDetails : []
+        }
+        //Create Previous Orders data
+        await orderModel.create(orderObj);
+        
+        //Create the user
         const dbRes = await userModel.create(userData);
         res.status(200).send({ message: "User Created", user: dbRes });
     }
@@ -64,10 +74,16 @@ const userRegistration = async (req, res) => {
 //Handle User Cart Updation.
 const updateUserCart = async (req, res) => {
     try {
-        let user = req.body;
+        let user = req.body.user;
+        console.log(req.body.user)
         //Update user Cart data;
+
+
+        let dbResTest = await userModel.findOne({username : user.username});
+        
         let dbRes = await userModel.updateOne({ _id: user._id }
             , { $set: { cart: user.cart } });
+        console.log(dbRes);
         res.status(200).send({ message: "Cart Updated" });
     } catch (error) {
         console.log("Error in updateUserCart");
@@ -89,6 +105,8 @@ const checkSession = async (req, res) => {
     }
 
 }
+
+
 
 
 module.exports = { userLogin, userRegistration, updateUserCart, checkSession };

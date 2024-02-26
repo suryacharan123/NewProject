@@ -1,7 +1,9 @@
 const express = require('express');
-// Import userApi router
+// Import API's router
 const userApi = require("./APIs/user-api");
 const bookApi = require("./APIs/book-api");
+const orderApi = require("./APIs/order-api");
+
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 require("dotenv").config();
@@ -25,6 +27,7 @@ app.use(cors());
 // Use the userApi router
 app.use("/user-api", userApi);
 app.use("/book-api", bookApi);
+app.use("/order-api", orderApi);
 
 
 const PORT = 4000;
