@@ -13,7 +13,7 @@ function CartItemsContainer() {
     const navigate = useNavigate();
     let [showPaymentLayout, setShowPaymentLayout] = useState(false);
 
-    let { cartItems, userOrders, loginStatus, setUserOrders, setCartItems , emptyCart } = useContext(userLoginContextObj);
+    let { cartItems, userOrders, loginStatus, setUserOrders, setCartItems, emptyCart, currentUser } = useContext(userLoginContextObj);
 
 
     const [totalAmout, setTotalAmount] = useState(0)
@@ -78,29 +78,35 @@ function CartItemsContainer() {
     let handlePaymentForm = async () => {
 
         let orderDetails = paymentFormValidation(paymentDetailsData, cartItems);
+        console.log(orderDetails);
         if (Object.keys(orderDetails).length !== 0) {
             // No errors
             //Send all the data into the database
-            let updatedOrders = { ...userOrders };
-            updatedOrders.orderDetails.push(orderDetails);
-            setUserOrders(updatedOrders);
-            await processOrder(updatedOrders);
-            //Set user Cart to empty
-            setCartItems([]);
-            //Set total amount to 0
-            setTotalAmount(0);
-            //Empty the cart in user Object
-            await emptyCart();
-            setPaymentDetailsData(paymentDetails);
+            let updatedOrders = { ...orderDetails };
+            // console.log(orderDetails)
+            // updatedOrders.orderDetails.push(orderDetails);
+            // setUserOrders(updatedOrders);
+            let username = currentUser.username;
+            // console.log();
+            let res = await processOrder({ updatedOrders, username });
+            if (res.status === 200) {
+                //Set user Cart to empty
+                setCartItems([]);
+                //Set total amount to 0
+                setTotalAmount(0);
+                //Empty the cart in user Object
+                await emptyCart();
+                setPaymentDetailsData(paymentDetails);
 
-            setShowPaymentLayout(false);
+                setShowPaymentLayout(false);
 
-            setPromptHeading("Success")
-            setPromptMsg("Payment Successful.You will be redirected to Home Page.");
-            setShowPopup(true);
+                setPromptHeading("Success")
+                setPromptMsg("Payment Successful.You will be redirected to Home Page.");
+                setShowPopup(true);
 
-            setShowPopupAndNavigate(true);
-            setPopupPath("/")
+                setShowPopupAndNavigate(true);
+                setPopupPath("/")
+            }
         }
         else {
             toast.error("Please check all of your Details");

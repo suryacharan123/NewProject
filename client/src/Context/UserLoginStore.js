@@ -51,7 +51,7 @@ function UserLoginStore({ children }) {
     //Handle user Login when token is valid
     let handleUserTokenLogin = async (userObj) => {
         setLoginStatus(true);
-        console.log(userObj);
+        // console.log(userObj);
         setCurrentUser(userObj);
         setIsAdmin(userObj.isAdmin);
         setCartItems(userObj.cart);
@@ -139,7 +139,7 @@ function UserLoginStore({ children }) {
         let currentUserObj = { ...currentUser }
         currentUserObj.cart = updatedCart;
         setCurrentUser(currentUserObj);
-        await updateUserCartAPI(currentUserObj)
+        await updateUserCartAPI({ user: currentUser, token: localStorage.getItem("token") })
     }
 
     let handleQtyChange = async (book, qty) => {
@@ -159,7 +159,7 @@ function UserLoginStore({ children }) {
             if (loginStatus) {
                 let currentUserObj = currentUser;
                 currentUserObj.cart = cartItemObj;
-                await updateUserCartAPI(currentUser)
+                await updateUserCartAPI({ user: currentUser, token: localStorage.getItem("token") })
             }
         }
 

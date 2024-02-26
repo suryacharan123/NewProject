@@ -11,7 +11,7 @@ function UserNavLayout({ theme, handleLogout }) {
     };
 
     return (
-        <ul className="navbar-nav ">
+        <ul className={`navbar-nav `}>
             {/* User Dropdown - Visible only on larger screens */}
             <li className={`nav-item p-0 d-none d-lg-block ${isDropdownOpen ? 'show' : ''}`} onClick={toggleDropdown}>
                 <div
@@ -22,7 +22,7 @@ function UserNavLayout({ theme, handleLogout }) {
                     aria-haspopup="true"
                     aria-expanded={isDropdownOpen ? 'true' : 'false'}
                 >
-                    <NavIconLink path="" theme={true} icon="fa-sharp fa-solid fa-user" />
+                    <NavIconLink path="" theme={theme} icon="fa-sharp fa-solid fa-user" />
                 </div>
                 <div className={`dropdown-menu ${isDropdownOpen ? 'show' : ''} dropdown-menu-right mt-3`}>
                     {/* <NavLinkComp path="/user-profile" text="User Profile" theme={false} /> */}
@@ -36,16 +36,16 @@ function UserNavLayout({ theme, handleLogout }) {
             {/* User Options - Visible only on smaller screens */}
 
 
-            <NavLinkComp path="/" text="Home" theme={true} />
-            <NavLinkComp path="/books" text="Books" theme={true} />
+            <NavLinkComp path="/" text="Home" theme={theme} />
+            <NavLinkComp path="/books" text="Books" theme={theme} />
 
-            <NavIconLink path="/cart" theme={true} icon="fa-sharp fa-solid fa-cart-shopping" />
+            <NavIconLink path="/cart" theme={theme} icon="fa-sharp fa-solid fa-cart-shopping" />
             <div className="d-lg-none">
                 <li className="nav-item">
-                    <NavLinkComp path="/user-profile" text="User Profile" theme={true} />
+                    <NavLinkComp path="/user-profile" text="User Profile" theme={theme} />
                 </li>
                 <li className="nav-item">
-                    <NavLinkComp path="/" text="Logout" theme={true} handleLogout={handleLogout} />
+                    <NavLinkComp path="/" text="Logout" theme={theme} handleLogout={handleLogout} />
                 </li>
             </div>
         </ul>

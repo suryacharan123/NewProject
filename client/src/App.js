@@ -17,14 +17,16 @@ import UpdateBookpage from './Pages/UpdateBooksPage/UpdateBooksPage';
 import NotFoundPage from './Pages/NotFoundPage/NotFoundPage';
 import OrdersPage from './Pages/OrdersPage/OrdersPage';
 
+import { useNavigate } from 'react-router-dom';
+
 
 import axios from 'axios';
 
+
 function App() {
+
   let { loginStatus, isAdmin, handleUserTokenLogin } = useContext(userLoginContextObj);
-
-
-
+  const navigate = useNavigate();
   let checkTokenSession = async () => {
     let token = localStorage.getItem("token");
     //If no token is present Do nothing
@@ -40,11 +42,13 @@ function App() {
       //If the token is expired
       if (tokenStatus.message === 'Expired') {
         return;
-      }
+    }
       //Else perform a login with all the received data;
       else {
-
         handleUserTokenLogin(tokenStatus.data.payload)
+        if(tokenStatus.data.payload.isAdmin){
+          navigate("/admin");
+        }
       }
     }
 
@@ -55,14 +59,8 @@ function App() {
     checkTokenSession();
   }, [])
 
-  const displayToast = () =>{
-    console.log("here");
-  }
-
   return (
     <div>
-
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/books" element={<BooksPage />} />

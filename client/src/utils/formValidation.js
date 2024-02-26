@@ -72,7 +72,7 @@ export const paymentFormValidation = (paymentDetails,cartItems) =>{
     let userObj = {
         address : address,
         cardDetails : cardDetails,
-        cartItems : cartItems,
+        orderItems : cartItems,
         date : orderDate.toDateString()
     }
     return userObj
