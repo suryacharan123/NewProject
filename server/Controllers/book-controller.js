@@ -11,7 +11,7 @@ const addBookData = async (req, res) => {
     try {
         //Get the book Data
         const bookData = req.body;
-
+        console.log(req.body);
         // Add the image link to the book Data
 
         // bookData.image = req.file.path;
@@ -22,22 +22,22 @@ const addBookData = async (req, res) => {
         bookData.image = imageUrl
 
         const dbRes = await bookModel.create(bookData);
+        console.log(dbRes);
+        // fs.access(req.file.path, fs.constants.F_OK, (err) => {
+        //     if (err) {
+        //         console.error('File does not exist:', err);
+        //         return;
+        //     }
 
-        fs.access(req.file.path, fs.constants.F_OK, (err) => {
-            if (err) {
-                console.error('File does not exist:', err);
-                return;
-            }
-    
-            // File exists, so delete it
-            fs.unlink(req.file.path, (err) => {
-                if (err) {
-                    console.error('Error deleting file:', err);
-                    return;
-                }
-                console.log('File deleted successfully');
-            });
-        });
+        //     // File exists, so delete it
+        //     fs.unlink(req.file.path, (err) => {
+        //         if (err) {
+        //             // console.error('Error deleting file:', err);
+        //             return;
+        //         }
+        //         // console.log('File deleted successfully');
+        //     });
+        // });
 
         res.status(200).send({ message: "Book Created" })
     }
@@ -54,7 +54,8 @@ const getBooks = async (req, res) => {
         const books = await bookModel.find();
         res.status(200).send({ message: "Data Received", payload: books })
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).send({ message: "Internal Server Error" });
     }
 }
 
@@ -98,9 +99,9 @@ const updateBookData = async (req, res) => {
             console.log("Here")
             bookObj.image = req.body.oldImage;
             console.log(bookObj);
-            let dbRes = await bookModel.updateOne({ _id: req.body._id }, {$set : bookObj});
+            let dbRes = await bookModel.updateOne({ _id: req.body._id }, { $set: bookObj });
             console.log(dbRes);
-            res.status(200).send({message : "Book Data Updated"})
+            res.status(200).send({ message: "Book Data Updated" })
         }
         else {
             let newImagePath = req.file.path;
@@ -116,14 +117,15 @@ const updateBookData = async (req, res) => {
             // console.log(res2);
             bookObj.image = res2.url
             //Create book Obj
-            
-        let dbRes = await bookModel.updateOne({ _id: req.body._id }, {$set : bookObj});
-            console.log(dbRes);
+
+            let dbRes = await bookModel.updateOne({ _id: req.body._id }, { $set: bookObj });
+            res.status(200).send({message : "Book Data Updated"});
         }
 
     }
     catch (error) {
         console.log(error);
+        res.status(500).send({message : "Internal Server Error"});
     }
 }
 
@@ -131,16 +133,19 @@ const updateBookData = async (req, res) => {
 
 const deleteBookData = async (req, res) => {
     try {
-        console.log(req.query);
         let bookData = await bookModel.findOne({ _id: req.query.id });
         let publicId = extractPublicId(bookData.image);
+
         const result = await cloudinary.uploader.destroy(publicId);
+
         let dbRes = await bookModel.deleteOne({ _id: req.query.id });
-        return res.status(200).send({ message: "Data Deleted" });
+
+        res.status(200).send({ message: "Data Deleted" });
 
     }
     catch (e) {
         console.log(e);
+        res.status(500).send({message : "Internal Server Error"});
     }
 }
 
