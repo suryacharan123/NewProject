@@ -25,7 +25,7 @@
 
 .author-name {
     margin-top: 20px;
-    font-size: 0.8rem;
+    font-size: 1rem;
     padding: 0.5rem;
 }
 
@@ -59,7 +59,7 @@
     -webkit-line-clamp: 2;
     /* Number of lines to display before truncating */
     -webkit-box-orient: vertical;
-    min-height: 40px;
+    min-height: 30px;
     /* Set a minimum height for the title container */
     max-height: 70px;
     /* Set a maximum height for the title container */

@@ -5,10 +5,18 @@ import { userLoginContextObj } from '../../Context/userLoginContext';
 import BookImage from '../BookImage/BookImage';
 import Quantity from '../Quantity/Quantity';
 
+import { useDispatch } from 'react-redux';
+import { showLoading,hideLoading } from '../../Redux/Slices/spinnerSlice';
+
 function HorizontalProductCard({ book, isCart,isProductCard }) {
+
+    const dispatch = useDispatch();
+
     const { removeFromCart } = useContext(userLoginContextObj);
     const handleRemove = async() => {
+        dispatch(showLoading());
         await removeFromCart(book);
+        dispatch(hideLoading());
     };
 
     return (

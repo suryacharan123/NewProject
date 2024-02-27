@@ -3,7 +3,15 @@ import HorizontalProductCard from '../../Components/HorizontalProductCard/Horizo
 import Navbar from '../../Components/Navbar/Navbar'
 import { userLoginContextObj } from '../../Context/userLoginContext'
 import axios from 'axios';
+import {useDispatch} from 'react-redux'
+import { showLoading,hideLoading } from '../../Redux/Slices/spinnerSlice';
+
+
+
 function OrdersPage() {
+    
+    const dispatch = useDispatch();
+    
     // let { userOrders } = useContext(userLoginContextObj);
     let { currentUser } = useContext(userLoginContextObj);
 
@@ -11,7 +19,10 @@ function OrdersPage() {
 
     const getData = async() =>{
         
+        dispatch(showLoading());
         let receivedData = await axios.get(`http://localhost:4000/order-api/get-orders?username=${currentUser.username}`);
+        dispatch(hideLoading());
+
         if(receivedData.status === 200){
             let orderData = []
             orderData = receivedData.data.payload;

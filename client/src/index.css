@@ -23,3 +23,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.background-image{
+
+  background-color: #f3cff3;
+  
+  /* -webkit-filter: blur(5px);
+  filter: blur(5px); */
+}

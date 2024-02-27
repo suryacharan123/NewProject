@@ -2,13 +2,26 @@ import React, { useState, useEffect } from 'react'
 import ProductCard from '../../ProductCard/ProductCard';
 import './ProductListing.css'
 import { getAllBookDetailsAPI } from '../../../utils/apicalls';
+import { useNavigate } from 'react-router-dom';
+import { showLoading,hideLoading } from '../../../Redux/Slices/spinnerSlice';
+import { useDispatch } from 'react-redux';
 function ProductListing() {
-    
+    const navigate = useNavigate();
     let [bookData, setBookData] = useState([]);
-
+    const dispatch = useDispatch();
     let getData = async () => {
-        let res = await getAllBookDetailsAPI();//getAllBookDetails
-        setBookData(res.data.payload);
+        try{
+            dispatch(showLoading());
+            let res = await getAllBookDetailsAPI();//getAllBookDetails
+            dispatch(hideLoading());
+            
+            if(res.status === 200){
+                setBookData(res.data.payload);
+            }
+        }
+        catch(e){
+            navigate("/error");
+        }
     }
 
     useEffect(() => {

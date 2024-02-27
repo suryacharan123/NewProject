@@ -5,21 +5,28 @@ import './SearchPage.css'
 import axios from 'axios'
 import {Toaster,toast} from 'react-hot-toast'
 import { useLocation } from 'react-router-dom'
+import { useDispatch, UseDispatch } from 'react-redux'
+import { getAllBookDetailsAPI } from '../../utils/apicalls'
 
 import SearchInput from '../../Components/SearchInput/SearchInput'
 import HorizontalProductCard from '../../Components/HorizontalProductCard/HorizontalProductCard'
+import { showLoading,hideLoading } from '../../Redux/Slices/spinnerSlice'
 function SearchPage() {
+    const dispatch = useDispatch();
     const location = useLocation();
     // let [bookData,setBookData] = useState([]);
     const [searchResult, setSearchResult] = useState([]);
     let getData = async () => {
         try {
-            toast.loading();
-            let res = await axios.get("http://localhost:5000/books");
-            toast.dismiss();
-            let bookData = res.data;
+            dispatch(showLoading());
+            const  res = await getAllBookDetailsAPI();
+            dispatch(hideLoading());    
+
+            let bookData = res.data.payload;
+            console.log(bookData);
             let searchValue = [];
             searchValue = bookData.filter((data) => data.title.toLowerCase().includes(location.state.toLowerCase()));
+            console.log(searchValue)
             setSearchResult(searchValue);
         } catch (error) {
             console.log(error);
@@ -37,7 +44,7 @@ function SearchPage() {
             <Navbar theme={true} />
             <Toaster/>
             {
-                searchResult ?
+                searchResult.length !== 0  ?
                     <div className='search-result-container'>
                         <div className='container'>
                             <div className='mb-4'>
@@ -53,7 +60,15 @@ function SearchPage() {
                         </div>
                     </div>
                     :
-                    <h1>No Results Found</h1>
+                    <div className='search-result-container'>
+                        <div className='container'>
+                            <div className='mb-4'>
+                                <SearchInput />
+                            </div>
+                            <h1>No Results Found</h1>
+                            
+                        </div>
+                    </div>
             }
             <Footer />
         </div>

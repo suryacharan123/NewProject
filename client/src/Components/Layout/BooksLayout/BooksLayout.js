@@ -6,10 +6,13 @@ import { Toaster, toast } from 'react-hot-toast';
 import { getAllBookDetailsAPI } from '../../../utils/apicalls';
 import { deleteBookDataAPI } from '../../../utils/apicalls';
 import axios from 'axios';
+
+import { useDispatch } from 'react-redux';
+import { showLoading,hideLoading } from '../../../Redux/Slices/spinnerSlice';
 function AllProducts({ isAdmin }) {
   let navigate = useNavigate();
   const [booksData, setBookData] = useState([]);
-
+  const dispatch = useDispatch();
   //Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 12;
@@ -18,12 +21,12 @@ function AllProducts({ isAdmin }) {
   const getData = async () => {
     try {
       //Get all book Details
-      toast.loading();
+      dispatch(showLoading());
       const res = await getAllBookDetailsAPI();
+      dispatch(hideLoading());
       // console.log(res);
       setBookData(res.data.payload);
-      toast.dismiss();
-
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -38,10 +41,14 @@ function AllProducts({ isAdmin }) {
 
   const handleDelete = async (id) => {
     try {
-      // await deleteBookDataAPI(id);
+
+      dispatch(showLoading());
+
       let dbRes = await axios.delete("http://localhost:4000/book-api/delete-book-data",{
         params : {id: id}
       });
+      dispatch(hideLoading());
+
       if(dbRes.status === 200){
         const updatedBookData = booksData.filter((book) => book._id !== id);
         setBookData(updatedBookData);      

@@ -4,11 +4,15 @@ import { updateBookDetailsAPI } from '../../utils/apicalls'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BooksFormLayout from '../../Components/Layout/BooksFormLayout/BooksFormLayout'
 import { Toaster, toast } from 'react-hot-toast'
+
+import { useDispatch, UseDispatch } from 'react-redux'
+import { showLoading,hideLoading } from '../../Redux/Slices/spinnerSlice'
+
 import axios from 'axios'
 function UpdateBookpage() {
 
 
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
     // const [isUpdate, setIsUpdate] = useState(false)
@@ -26,17 +30,18 @@ function UpdateBookpage() {
         formData.append("price", data.price);
         formData.append("oldImage",data.oldImage);
         // console.log(typeof(image))
-        console.log("Here")
+        dispatch(showLoading());
         let dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
-        console.log(dbRes);
+        dispatch(hideLoading());
+
         // toast.loading();
         // // const dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
         // // await updateBookDetailsAPI(location,bookDetails)
         // toast.dismiss();
-        // toast.success("Book Data Updated");
-        // setTimeout(()=>{
-        //     navigate('/admin')
-        // },  1000);
+        toast.success("Book Data Updated");
+        setTimeout(()=>{
+            navigate('/admin')
+        },  1000);
     }
 
 

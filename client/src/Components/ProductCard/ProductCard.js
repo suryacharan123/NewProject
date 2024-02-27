@@ -3,18 +3,23 @@ import './ProductCard.css'
 import { Link } from 'react-router-dom'
 import BlackButton from '../Buttons/BlackButton'
 import BookImage from '../BookImage/BookImage'
-
-
+import { useDispatch } from 'react-redux'
+import { showLoading,hideLoading } from '../../Redux/Slices/spinnerSlice'
 
 function ProductCard({ book, isAdmin, handleUpdate, handleDelete }) {
 
+    const dispatch = useDispatch();
 
     let handleDeleteButton = async () => {
-        await handleDelete(book._id)
+        dispatch(showLoading());
+        await handleDelete(book._id);
+        dispatch(hideLoading());
     }
 
     let handleUpdateButton = async () => {
+        dispatch(showLoading());
         await handleUpdate(book._id);
+        dispatch(hideLoading());
     }
 
     return (

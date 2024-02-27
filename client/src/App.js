@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-
+import './App.css'
 import HomePage from './Pages/HomePage/HomePage';
 import BooksPage from './Pages/BooksPage/BooksPage';
 import Login from './Pages/LoginPage/Login';
@@ -16,15 +16,16 @@ import AdminAddBooksPage from './Pages/AddBooksPage/AddBooksPage';
 import UpdateBookpage from './Pages/UpdateBooksPage/UpdateBooksPage';
 import NotFoundPage from './Pages/NotFoundPage/NotFoundPage';
 import OrdersPage from './Pages/OrdersPage/OrdersPage';
+import ErrorPage from './Pages/ErrorPage/ErrorPage';
 
 import { useNavigate } from 'react-router-dom';
 
 
 import axios from 'axios';
-
+import { useSelector } from 'react-redux';
 
 function App() {
-
+  const { loading } = useSelector(state => state.spinner);
   let { loginStatus, isAdmin, handleUserTokenLogin } = useContext(userLoginContextObj);
   const navigate = useNavigate();
   let checkTokenSession = async () => {
@@ -35,20 +36,24 @@ function App() {
     }
     //If Token Exists
     else {
-      console.log("Check for validity")
+      try {
+        console.log("Check for validity")
       //check token for it's expired
       let tokenStatus = await axios.post("http://localhost:4000/user-api/check-session-validity", { token });
 
       //If the token is expired
       if (tokenStatus.message === 'Expired') {
         return;
-    }
+      }
       //Else perform a login with all the received data;
       else {
         handleUserTokenLogin(tokenStatus.data.payload)
-        if(tokenStatus.data.payload.isAdmin){
+        if (tokenStatus.data.payload.isAdmin) {
           navigate("/admin");
         }
+      }
+      } catch (error) {
+          navigate("/error");
       }
     }
 
@@ -61,10 +66,19 @@ function App() {
 
   return (
     <div>
+      {
+        loading && (
+          <div className='spinner-parent'>
+            <div class="spinner-border" role="status">
+            </div>
+          </div>
+        )
+      }
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/books" element={<BooksPage />} />
         <Route path="/login" element={<Login />} />
+        
         <Route path="/signup" element={<SignUp />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/book-details/:id" element={<DetailsPage />} />
@@ -82,7 +96,8 @@ function App() {
         {
           isAdmin ? <Route path="/update-books" element={<UpdateBookpage />} /> : <Route path="/update-books" element={<Navigate to="/login" />}></Route>
         }
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
+        <Route path = "/error" element ={<ErrorPage/>}/>
       </Routes>
 
     </div>

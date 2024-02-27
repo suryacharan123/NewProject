@@ -127,7 +127,7 @@ function UserLoginStore({ children }) {
             let currentUserObj = { ...currentUser }
             currentUserObj.cart = updatedCart;
             setCurrentUser(currentUserObj)
-            await updateUserCartAPI(currentUserObj)
+            await updateUserCartAPI({ user: currentUser, token: localStorage.getItem("token") })
         }
 
     }

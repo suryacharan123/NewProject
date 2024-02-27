@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react'
 import BlackButton from '../../Buttons/BlackButton'
 import FormInputField from '../../FormInputField/FormInputField'
 import { useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { showLoading,hideLoading } from '../../../Redux/Slices/spinnerSlice'
 function BooksFormLayout({ onSubmit, heading, isEdit }) {
 
     const location = useLocation();
   
+    const dispatch = useDispatch();
+    
     //Form States
     let [title, setTitle] = useState('')
     let [author, setAuthor] = useState('')
@@ -25,11 +29,14 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
         e.preventDefault();
         if (isEdit) {
             let _id = location.state[0]._id;
+            dispatch(showLoading());
             await onSubmit({_id:_id, title, author, description, image, price, genere ,oldImage});
+            dispatch(hideLoading());
         }
         else {
-            
+            dispatch(showLoading());
             await onSubmit({ title, author, description, image, price, genere });
+            dispatch(hideLoading());
             setAuthor('');
             setTitle('');
             setDescription('');

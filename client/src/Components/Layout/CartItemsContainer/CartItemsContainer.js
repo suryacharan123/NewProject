@@ -9,7 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { paymentFormValidation } from '../../../utils/formValidation';
 import { Toaster, toast } from 'react-hot-toast';
 import { processOrder } from '../../../utils/apicalls';
+
+import { useDispatch } from 'react-redux';
+import { showLoading,hideLoading } from '../../../Redux/Slices/spinnerSlice';
+
 function CartItemsContainer() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     let [showPaymentLayout, setShowPaymentLayout] = useState(false);
 
@@ -88,14 +93,21 @@ function CartItemsContainer() {
             // setUserOrders(updatedOrders);
             let username = currentUser.username;
             // console.log();
+            
+            dispatch(showLoading())
             let res = await processOrder({ updatedOrders, username });
+            dispatch(hideLoading());
+            
             if (res.status === 200) {
                 //Set user Cart to empty
                 setCartItems([]);
                 //Set total amount to 0
                 setTotalAmount(0);
                 //Empty the cart in user Object
+                dispatch(showLoading())
                 await emptyCart();
+                dispatch(hideLoading());
+                
                 setPaymentDetailsData(paymentDetails);
 
                 setShowPaymentLayout(false);

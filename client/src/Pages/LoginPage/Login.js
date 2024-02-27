@@ -1,28 +1,38 @@
 // Login.jsx
+//Import required Modules
 import React, { useContext, useState } from 'react';
-import Navbar from '../../Components/Navbar/Navbar';
+import { useDispatch } from "react-redux"
+import { Toaster, toast } from 'react-hot-toast';
 
+//Import required Styling
 import './Login.css';
-import { userLoginContextObj } from '../../Context/userLoginContext';
+
+//Import required Components
+import Navbar from '../../Components/Navbar/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import BlackButton from '../../Components/Buttons/BlackButton';
 import FormInputField from '../../Components/FormInputField/FormInputField';
 import LoginImage from './../../Components/LoginImage/LoginImage';
 import { signUpFormValidation } from '../../utils/formValidation';
-import { Toaster,toast } from 'react-hot-toast';
 import Footer from '../../Components/Footer/Footer';
 
+//Import Context or Redux
+import { userLoginContextObj } from '../../Context/userLoginContext';
+import { showLoading, hideLoading } from '../../Redux/Slices/spinnerSlice';
 
-
-
+//Return Login page
 function Login() {
-    let { handleUserLogin,loginStatus,isAdmin } = useContext(userLoginContextObj);
+
+    const dispatch = useDispatch();
     let navigate = useNavigate();
+
+    let { handleUserLogin } = useContext(userLoginContextObj);
 
     //Form States
     let [username, setUsername] = useState('');
     let [password, setPassword] = useState('');
 
+    //Handle Form Submit
     let handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -35,30 +45,36 @@ function Login() {
 
         //If there is no errors
         else {
-            let userObj = {
-                username: username,
-                password: password
-            };
+            try {
+                let userObj = {
+                    username: username,
+                    password: password
+                };
 
-            //Handle login in user context
-           
-            //Use a toat here
-            toast.loading();
-            let res = await handleUserLogin(userObj);
-            toast.dismiss();
-            
-            if (res === "USER_LOGIN") {
-                toast.success("Login SuccessFull",500)
-                setTimeout(()=>{
-                    navigate("/");
-                },550)
-            }
+                //Display Spinner
+                dispatch(showLoading())
+                //Handle Login Process
+                let res = await handleUserLogin(userObj);
+                //Hide Spinner
+                dispatch(hideLoading());
 
-            else if (res === "ADMIN_LOGIN") {
-                toast.success("Login Successful");
-                setTimeout(()=>{
-                    navigate("/admin")
-                },500)
+                //If userLogin navigate to Home page
+                if (res === "USER_LOGIN") {
+                    toast.success("Login SuccessFull", 500)
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 550)
+                }
+                //If admin Login Navigate to Admin Page.
+                else if (res === "ADMIN_LOGIN") {
+                    toast.success("Login Successful");
+                    setTimeout(() => {
+                        navigate("/admin")
+                    }, 500)
+                }
+            } catch (error) {
+                console.log(error);
+                navigate("/error");
             }
 
         }
@@ -69,8 +85,7 @@ function Login() {
     return (
         <div>
             <Navbar theme={true} />
-            {/* {showPopup && <Popup message={promptMsg} heading={promptHeading} showPopupAndNavigate={showPopupAndNavigate} setShowPopup={setShowPopup} path="/"/>} */}
-            <Toaster/>
+            <Toaster />
             <div className='signup-container'>
 
                 <LoginImage />
@@ -109,7 +124,7 @@ function Login() {
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 }

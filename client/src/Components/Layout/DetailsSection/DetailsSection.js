@@ -7,7 +7,8 @@ import { userLoginContextObj } from './../../../Context/userLoginContext';
 import BookImage from '../../BookImage/BookImage';
 import Popup from '../../Popup/Popup';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { showLoading,hideLoading } from '../../../Redux/Slices/spinnerSlice';
 function DetailsSection() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -21,10 +22,13 @@ function DetailsSection() {
     let [promptMsg, setPromptMsg] = useState('');
     let [promptHeading, setPromptHeading] = useState('')
 
+    const dispatch = useDispatch();
 
     let getData = async () => {
         try {
+            dispatch(showLoading());
             let res = await axios.get(`http://localhost:4000/book-api/get-book-details?id=${id}`);//getBookDetails
+            dispatch(hideLoading());
             console.log(res)
             if (res.data.length === 0) {
                 navigate("*")
@@ -41,8 +45,9 @@ function DetailsSection() {
 
 
     const handleAddToCart = async () => {
+        dispatch(showLoading());
         let res = await addToCart(bookData);
-        
+        dispatch(hideLoading());
 
         setPromptMsg("Book Added to Cart.");
         setPromptHeading("Success!!!")

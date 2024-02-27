@@ -1,24 +1,29 @@
 import React, { useState } from 'react'
-import Navbar from '../../Components/Navbar/Navbar';
-import "./SignUp.css";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
+import { useDispatch } from "react-redux"
 
-// import Popup from '../../Components/Popup/Popup';
+import "./SignUp.css";
+
+import Navbar from '../../Components/Navbar/Navbar';
 import BlackButton from '../../Components/Buttons/BlackButton';
 import Footer from '../../Components/Footer/Footer';
 import FormInputField from '../../Components/FormInputField/FormInputField';
 import LoginImage from '../../Components/LoginImage/LoginImage';
+
 import { signUpFormValidation } from '../../utils/formValidation';
-// import { checkUserNameAPI } from '../../utils/apicalls';
-import { useNavigate } from 'react-router-dom';
-import { Toaster, toast } from 'react-hot-toast';
+import { showLoading, hideLoading } from '../../Redux/Slices/spinnerSlice';
+
 
 
 function SignUp() {
 
     let navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    //Form State Variables
     let [username, setUserName] = useState('');
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState('');
@@ -34,33 +39,28 @@ function SignUp() {
         }
         else {
             //Check if the user exists.
-            
-                //Encrypt the password
-                let userObj = {
-                    username: username,
-                    email: email,
-                    password: password,
-                    isAdmin: false,
-                    cart: []
-                }
-                let orderObj = {
-                    username :username,
-                    orderDetails : []
-                }
-                
-                toast.loading("Please wait a moment");
-                let res = await axios.post('http://localhost:4000/user-api/register', userObj);
-                console.log(res);
-                toast.dismiss();
-                if (res.status === 200) {
-                    toast.success("Sign Up successful.");
-                    setTimeout(() => {
-                        navigate("/login");
-                    }, 1000);
-                }
-            
-        }
 
+            //Encrypt the password
+            let userObj = {
+                username: username,
+                email: email,
+                password: password,
+                isAdmin: false,
+                cart: []
+            }
+            //Show Spinner
+            dispatch(showLoading());
+            let res = await axios.post('http://localhost:4000/user-api/register', userObj);
+            //Hide Spinner
+            dispatch(hideLoading());
+
+            if (res.status === 200) {
+                toast.success("Sign Up successful.");
+                setTimeout(() => {
+                    navigate("/login");
+                }, 1000);
+            }
+        }
     }
 
     return (
