@@ -21,7 +21,6 @@ function BooksFormLayout({ onSubmit, heading, isEdit }) {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        alert("Here")
         setImage(file);
     }
 

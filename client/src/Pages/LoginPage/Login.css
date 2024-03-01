@@ -73,6 +73,7 @@
 @media (max-width: 430px) {
     .signup-container{
         flex-direction: column;
+        margin-bottom: 50px;
     }
     .signup-img-container {
         display: none;

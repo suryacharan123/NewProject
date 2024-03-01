@@ -44,7 +44,7 @@ function UserLoginStore({ children }) {
                 return dbRes.data.message;
             }
         } catch (error) {
-            console.log(error)
+            return "AXIOS_ERROR"
         }
     }
 

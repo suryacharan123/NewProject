@@ -103,7 +103,7 @@ function App() {
         {
           isAdmin ? <Route path="/update-books" element={<UpdateBookpage />} /> : <Route path="/update-books" element={<Navigate to="/login" />}></Route>
         }
-        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
         <Route path = "/error" element ={<ErrorPage/>}/>
       </Routes>
 

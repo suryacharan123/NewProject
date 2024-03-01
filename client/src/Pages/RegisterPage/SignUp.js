@@ -35,7 +35,8 @@ function SignUp() {
         e.preventDefault();
 
         //Validate the form
-        let errMsg = signUpFormValidation({ username, email, password })
+        try {
+            let errMsg = signUpFormValidation({ username, email, password })
         if (errMsg) {
             toast.error(errMsg);
         }
@@ -63,6 +64,11 @@ function SignUp() {
                     navigate("/login");
                 }, 1000);
             }
+        }
+        } catch (error) {
+            
+            dispatch(hideLoading());
+            navigate("/error")
         }
     }
 

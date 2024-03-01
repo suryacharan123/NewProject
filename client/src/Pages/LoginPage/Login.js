@@ -72,12 +72,16 @@ function Login() {
                         navigate("/admin")
                     }, 500)
                 }
+                else if(res === "AXIOS_ERROR"){
+                    navigate("/error");
+                }
                 else{
                     toast.error(res);
                 }
             } catch (error) {
-                console.log(error);
+                
                 navigate("/error");
+                dispatch(hideLoading());
             }
 
         }
@@ -88,7 +92,9 @@ function Login() {
     return (
         <div>
             <Navbar theme={true} />
+
             <Toaster />
+            
             <div className='signup-container'>
 
                 <LoginImage />

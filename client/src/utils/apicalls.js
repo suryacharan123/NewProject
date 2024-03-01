@@ -3,7 +3,7 @@ import axios from "axios";
 
 //user Login API
 export const userLoginAPI = async(userObj) =>{
-    return await axios.post('http://localhost:4000/user-api/login',userObj)
+    return await axios.post('http://localhost:4000/user-api/login11',userObj)
 }
 
 //User Registration API
@@ -33,11 +33,6 @@ export const getBookDetailsAPI = async (id) => {
 }
 
 
-// export const checkBookExistsAPI = async (bookDetails) => {
-//     return await axios.get(API_URL + `/books?title=${bookDetails.bookname}`);
-// }
-
-
 
 //Add Book into the database
 export const addBookDetailsAPI = async (bookDetails) => {
@@ -53,7 +48,6 @@ export const updateBookDetailsAPI = async (location, bookDetails) => {
 
 
 export const processOrder = async (updatedOrders) =>{
-    console.log(updatedOrders)
     return await axios.put("http://localhost:4000/order-api/process-order",updatedOrders);
 }
 

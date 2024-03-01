@@ -31,14 +31,25 @@ function DetailsSection() {
             dispatch(showLoading());
             let res = await getBookDetailsAPI(id);
             dispatch(hideLoading());
+         
           
-            if (res.data.length === 0) {
+            if (res.data.payload.length === 0) {
+
                 navigate("*")
             }
+
             setBookData(res.data.payload);
         }
         catch (e) {
             console.log(e);
+            if(e.response.status === 500){
+                dispatch(hideLoading())
+                navigate("*");
+            }
+            else{
+                dispatch(hideLoading())
+                navigate("/error");
+            }
         }
     }
     useEffect(() => {
