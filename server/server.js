@@ -16,8 +16,13 @@ connectDB();
 
 //Connect to React App
 const path = require("path");
-const cors = require("cors")
-// app.use(express.static(path.join(__dirname,'../client/build')))
+const cors = require("cors");
+
+app.use(express.static(path.join(__dirname,'../client/build')))
+
+// app.use((req,res,next)=>{
+//   res.sendFile(path.join(__dirname,'../client/build/index.html'));
+// })
 
 app.use(express.json());
 app.use(bodyParser.json());

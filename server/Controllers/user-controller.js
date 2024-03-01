@@ -79,11 +79,10 @@ const updateUserCart = async (req, res) => {
         //Update user Cart data;
 
 
-        let dbResTest = await userModel.findOne({username : user.username});
         
         let dbRes = await userModel.updateOne({ _id: user._id }
             , { $set: { cart: user.cart } });
-        console.log(dbRes);
+        
         res.status(200).send({ message: "Cart Updated" });
     } catch (error) {
         console.log("Error in updateUserCart");

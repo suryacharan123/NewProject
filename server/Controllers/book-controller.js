@@ -11,33 +11,34 @@ const addBookData = async (req, res) => {
     try {
         //Get the book Data
         const bookData = req.body;
-        console.log(req.body);
+        
         // Add the image link to the book Data
 
         // bookData.image = req.file.path;
-
+        console.log(req.file.path);
         let result = await cloudinary.uploader.upload(req.file.path);
+        console.log("Image updated")
         let imageUrl = result.url;
         //Update the database
         bookData.image = imageUrl
 
         const dbRes = await bookModel.create(bookData);
-        console.log(dbRes);
-        // fs.access(req.file.path, fs.constants.F_OK, (err) => {
-        //     if (err) {
-        //         console.error('File does not exist:', err);
-        //         return;
-        //     }
+        console.log("Book Created")
+        fs.access(req.file.path, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error('File does not exist:', err);
+                return;
+            }
 
-        //     // File exists, so delete it
-        //     fs.unlink(req.file.path, (err) => {
-        //         if (err) {
-        //             // console.error('Error deleting file:', err);
-        //             return;
-        //         }
-        //         // console.log('File deleted successfully');
-        //     });
-        // });
+            // File exists, so delete it
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    // console.error('Error deleting file:', err);
+                    return;
+                }
+                console.log('File deleted successfully');
+            });
+        });
 
         res.status(200).send({ message: "Book Created" })
     }
@@ -54,7 +55,7 @@ const getBooks = async (req, res) => {
         const books = await bookModel.find();
         res.status(200).send({ message: "Data Received", payload: books })
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).send({ message: "Internal Server Error" });
     }
 }
@@ -70,6 +71,7 @@ const getBookDetails = async (req, res) => {
         res.status(200).send({ message: "Book Details Received", payload: dbRes })
     }
     catch (error) {
+        
         res.status(500).send({ message: "Internal Server Error" });
     }
 }
@@ -94,13 +96,12 @@ const updateBookData = async (req, res) => {
             price: parseInt(req.body.price)
         }
 
+        console.log(req.file);
         // let newImagePath = req.file;
         if (req.file === undefined) {
-            console.log("Here")
+            
             bookObj.image = req.body.oldImage;
-            console.log(bookObj);
             let dbRes = await bookModel.updateOne({ _id: req.body._id }, { $set: bookObj });
-            console.log(dbRes);
             res.status(200).send({ message: "Book Data Updated" })
         }
         else {
