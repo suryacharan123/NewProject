@@ -28,7 +28,7 @@ function AdminAddBooksPage() {
     try{
       
       dispatch(showLoading());
-      const res = await axios.post("http://localhost:4000/book-api/add-books",formData);
+      const res = await addBookDetailsAPI(formData);
       dispatch(hideLoading());
 
       if(res.status === 200){

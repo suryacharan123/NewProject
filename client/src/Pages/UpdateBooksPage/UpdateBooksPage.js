@@ -34,10 +34,7 @@ function UpdateBookpage() {
         let dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
         dispatch(hideLoading());
 
-        // toast.loading();
-        // // const dbRes = await axios.put("http://localhost:4000/book-api/update-book",formData);
-        // // await updateBookDetailsAPI(location,bookDetails)
-        // toast.dismiss();
+        
         toast.success("Book Data Updated");
         setTimeout(()=>{
             navigate('/admin')

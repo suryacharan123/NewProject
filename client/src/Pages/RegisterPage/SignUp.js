@@ -16,6 +16,8 @@ import LoginImage from '../../Components/LoginImage/LoginImage';
 import { signUpFormValidation } from '../../utils/formValidation';
 import { showLoading, hideLoading } from '../../Redux/Slices/spinnerSlice';
 
+import { signUpAPI } from '../../utils/apicalls';
+
 
 
 function SignUp() {
@@ -50,7 +52,8 @@ function SignUp() {
             }
             //Show Spinner
             dispatch(showLoading());
-            let res = await axios.post('http://localhost:4000/user-api/register', userObj);
+
+            let res = await signUpAPI(userObj);
             //Hide Spinner
             dispatch(hideLoading());
 

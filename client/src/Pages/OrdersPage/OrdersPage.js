@@ -5,7 +5,7 @@ import { userLoginContextObj } from '../../Context/userLoginContext'
 import axios from 'axios';
 import {useDispatch} from 'react-redux'
 import { showLoading,hideLoading } from '../../Redux/Slices/spinnerSlice';
-
+import { getPreviousOrders } from '../../utils/apicalls';
 
 
 function OrdersPage() {
@@ -20,7 +20,7 @@ function OrdersPage() {
     const getData = async() =>{
         
         dispatch(showLoading());
-        let receivedData = await axios.get(`http://localhost:4000/order-api/get-orders?username=${currentUser.username}`);
+        let receivedData = await getPreviousOrders(currentUser.username)
         dispatch(hideLoading());
 
         if(receivedData.status === 200){

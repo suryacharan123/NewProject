@@ -8,7 +8,6 @@ const AddressForm = ({ handleClosePaymentLayout, openPaymentForm,handleInputChan
         e.preventDefault();
         openPaymentForm();
     };
-    console.log(paymentDetailsData);
 
     return (
         <div className="address-form-container">

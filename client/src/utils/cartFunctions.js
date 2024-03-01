@@ -1,11 +1,7 @@
 export const isBookInCart = (bookDetails, cartItems) => {
-    console.log(bookDetails);
-
     let bookInCart = cartItems.find((item) => bookDetails._id === item._id);
-    console.log(bookInCart);
     if (bookInCart === undefined) { return undefined; }
     return bookInCart;
-
 }
 
 export const addQtyOnLogin = (userCartData, cartItems) => {

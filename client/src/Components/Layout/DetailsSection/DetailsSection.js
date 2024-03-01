@@ -9,6 +9,8 @@ import Popup from '../../Popup/Popup';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { showLoading,hideLoading } from '../../../Redux/Slices/spinnerSlice';
+import { getBookDetailsAPI } from '../../../utils/apicalls';
+
 function DetailsSection() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -27,9 +29,9 @@ function DetailsSection() {
     let getData = async () => {
         try {
             dispatch(showLoading());
-            let res = await axios.get(`http://localhost:4000/book-api/get-book-details?id=${id}`);//getBookDetails
+            let res = await getBookDetailsAPI(id);
             dispatch(hideLoading());
-            console.log(res)
+          
             if (res.data.length === 0) {
                 navigate("*")
             }

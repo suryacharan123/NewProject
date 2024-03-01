@@ -36,7 +36,7 @@ function HorizontalProductCard({ book, isCart,isProductCard }) {
                         </button>
                 }
                 {
-                    isProductCard && <Link to={`/book-details/${book.id}`} className='product-listing-button add-to-cart-btn'>Add to Cart</Link>
+                    isProductCard && <Link to={`/book-details/${book._id}`} className='product-listing-button add-to-cart-btn'>Add to Cart</Link>
                 }
             </div>
         </div>

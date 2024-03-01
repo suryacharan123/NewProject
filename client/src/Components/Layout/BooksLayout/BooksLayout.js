@@ -44,9 +44,7 @@ function AllProducts({ isAdmin }) {
 
       dispatch(showLoading());
 
-      let dbRes = await axios.delete("http://localhost:4000/book-api/delete-book-data",{
-        params : {id: id}
-      });
+      let dbRes = await deleteBookDataAPI(id);
       dispatch(hideLoading());
 
       if(dbRes.status === 200){

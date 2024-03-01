@@ -72,6 +72,9 @@ function Login() {
                         navigate("/admin")
                     }, 500)
                 }
+                else{
+                    toast.error(res);
+                }
             } catch (error) {
                 console.log(error);
                 navigate("/error");

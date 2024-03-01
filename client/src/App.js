@@ -19,6 +19,7 @@ import OrdersPage from './Pages/OrdersPage/OrdersPage';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
 
 import { useNavigate } from 'react-router-dom';
+import env from 'react-dotenv'
 
 
 import axios from 'axios';
@@ -28,6 +29,9 @@ function App() {
   const { loading } = useSelector(state => state.spinner);
   let { loginStatus, isAdmin, handleUserTokenLogin } = useContext(userLoginContextObj);
   const navigate = useNavigate();
+
+ 
+
   let checkTokenSession = async () => {
     let token = localStorage.getItem("token");
     //If no token is present Do nothing
@@ -62,7 +66,10 @@ function App() {
 
   useEffect(() => {
     checkTokenSession();
-  }, [])
+  }, []);
+
+  
+
 
   return (
     <div>
@@ -84,7 +91,7 @@ function App() {
         <Route path="/book-details/:id" element={<DetailsPage />} />
         <Route path="/cart" element={<CartPage />} />
         {
-          loginStatus ? <Route path="/order-details" element={<OrdersPage />} /> : <Route path="/admin" element={<Navigate to="/login" />} />
+          loginStatus ? <Route path="/order-details" element={<OrdersPage />} /> : <Route path="/order-details" element={<Navigate to="/login" />} />
         }
 
         {

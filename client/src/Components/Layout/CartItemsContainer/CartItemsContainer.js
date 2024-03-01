@@ -83,7 +83,7 @@ function CartItemsContainer() {
     let handlePaymentForm = async () => {
 
         let orderDetails = paymentFormValidation(paymentDetailsData, cartItems);
-        console.log(orderDetails);
+        
         if (Object.keys(orderDetails).length !== 0) {
             // No errors
             //Send all the data into the database

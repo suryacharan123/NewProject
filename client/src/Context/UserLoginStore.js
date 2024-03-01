@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { userLoginContextObj } from './userLoginContext'
 import axios from 'axios'
 // import { compareSync } from 'bcryptjs';
-import { checkUserNameAPI, getPreviousOrders, updateUserCartAPI } from '../utils/apicalls';
+import { checkUserNameAPI, getPreviousOrders, updateUserCartAPI, userLoginAPI } from '../utils/apicalls';
 
 
 // import Popup from '../Components/PopUp/Popup';
@@ -22,7 +22,7 @@ function UserLoginStore({ children }) {
             //Add current cart items into the userObj
             userObj.cart = cartItems;
 
-            let dbRes = await axios.post("http://localhost:4000/user-api/login", userObj);
+            let dbRes = await userLoginAPI(userObj);
 
             if (dbRes.data.message === "Login Successful") {
                 //Set all the states
@@ -40,8 +40,8 @@ function UserLoginStore({ children }) {
                 }
             }
             else {
-                // console.log(dbRes.data.message);
-                return;
+                console.log(dbRes.data.message);
+                return dbRes.data.message;
             }
         } catch (error) {
             console.log(error)
@@ -124,10 +124,12 @@ function UserLoginStore({ children }) {
         setCartItems(updatedCart);
         console.log(updatedCart)
         if (loginStatus) {
+            console.log("Here1111")
             let currentUserObj = { ...currentUser }
             currentUserObj.cart = updatedCart;
+            console.log(currentUserObj)
             setCurrentUser(currentUserObj)
-            await updateUserCartAPI({ user: currentUser, token: localStorage.getItem("token") })
+            await updateUserCartAPI({ user: currentUserObj, token: localStorage.getItem("token") })
         }
 
     }
@@ -139,7 +141,7 @@ function UserLoginStore({ children }) {
         let currentUserObj = { ...currentUser }
         currentUserObj.cart = updatedCart;
         setCurrentUser(currentUserObj);
-        await updateUserCartAPI({ user: currentUser, token: localStorage.getItem("token") })
+        await updateUserCartAPI({ user: currentUserObj, token: localStorage.getItem("token") })
     }
 
     let handleQtyChange = async (book, qty) => {
@@ -150,7 +152,7 @@ function UserLoginStore({ children }) {
         cartItemObj[index].qty += qty;
 
         if (cartItemObj[index].qty === 0) {
-            console.log("Here");
+
             await removeFromCart(book);
             return;
         }
@@ -159,7 +161,8 @@ function UserLoginStore({ children }) {
             if (loginStatus) {
                 let currentUserObj = currentUser;
                 currentUserObj.cart = cartItemObj;
-                await updateUserCartAPI({ user: currentUser, token: localStorage.getItem("token") })
+
+                await updateUserCartAPI({ user: currentUserObj, token: localStorage.getItem("token") })
             }
         }
 
